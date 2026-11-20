@@ -14,7 +14,7 @@ export interface LLMOption extends LLMSelection {
   provider_label?: string;
   context_window?: number;
   reasoning_effort?: string;
-  supported_reasoning_efforts?: string[];
+  supported_reasoning_efforts?: string[] | null;
   /** The model's own Settings declaration of reasoning support, when present. */
   declared_reasoning?: boolean;
   supports_vision?: boolean;

@@ -80,6 +80,33 @@ it("resets to the provider default with null", () => {
   expect(onChange).toHaveBeenLastCalledWith(null);
 });
 
+it("falls back to provider levels when the catalog publishes null", () => {
+  const onChange = vi.fn();
+  render(
+    <ReasoningEffortSelector
+      option={option({ supported_reasoning_efforts: null })}
+      value="high"
+      onChange={onChange}
+    />,
+  );
+  const trigger = screen.getByRole("button", { name: "Reasoning effort" });
+  expect(trigger.textContent).toContain("High");
+  fireEvent.click(trigger);
+  fireEvent.click(screen.getByRole("button", { name: "Low" }));
+  expect(onChange).toHaveBeenLastCalledWith("low");
+});
+
+it("hides when the catalog explicitly publishes no supported levels", () => {
+  const { container } = render(
+    <ReasoningEffortSelector
+      option={option({ supported_reasoning_efforts: [] })}
+      value="high"
+      onChange={vi.fn()}
+    />,
+  );
+  expect(container.firstChild).toBeNull();
+});
+
 it("hides when the model exposes no selectable level", () => {
   const { container } = render(
     <ReasoningEffortSelector
